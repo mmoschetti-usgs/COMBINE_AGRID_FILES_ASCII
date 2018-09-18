@@ -16,7 +16,7 @@ int sum_agrid_values(float lat_arr[],float lon_arr[],float agrid_comb[],int cntC
   int cnt, cnt1;
   float lon1, lat1, lon2, lat2;
   float diffLat=999, diffLon=999;
-  float threshVal=0.01;
+  float threshVal=0.005;
 
 // loop through values and sum where they agree
   for(cnt=0; cnt<cntCoords; cnt++) {
@@ -25,10 +25,10 @@ int sum_agrid_values(float lat_arr[],float lon_arr[],float agrid_comb[],int cntC
     for(cnt1=0; cnt1<cntIn; cnt1++) {
       lon2=lon_in[cnt1];
       lat2=lat_in[cnt1];
-      diffLon=abs(lon1-lon2);
-      diffLat=abs(lat1-lat2);
+      diffLon=fabs(lon1-lon2);
+      diffLat=fabs(lat1-lat2);
       if ( ( diffLon<threshVal ) && (diffLat < threshVal ) ) {
-        agrid_comb[cnt]=agrid_comb[cnt]+agrid_in[cnt1];
+        agrid_comb[cnt]+=agrid_in[cnt1];
         break;
       }
     }
@@ -121,9 +121,7 @@ fprintf(stderr,"%s file\n", parfile);
     fprintf(stderr,"Error reading parameter file, %s\n", parfile);
     exit(1);
   }
-  for(cnt=0; cnt<cntCoords; cnt++) {
-    agrid_comb[cnt]=0;
-  }
+  for(cnt=0; cnt<cntCoords; cnt++) agrid_comb[cnt]=0;
   fprintf(stderr,"cnt=%d\n", cntCoords);
 
 // read files from list
